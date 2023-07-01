@@ -1,3 +1,15 @@
 # Project exclude paths
 /project/target/
 /target/
+/.idea/.gitignore
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/modules/NussknackerDemo.iml
+/.idea/modules/NussknackerDemo-build.iml
+/.idea/codeStyles/Project.xml
+/.bsp/sbt.json
+/.idea/sbt.xml
+/.idea/libraries/sbt__org_scala_lang_scala_library_2_13_11_jar.xml
+/.idea/scala_compiler.xml
+/.idea/vcs.xml
