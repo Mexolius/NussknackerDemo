@@ -13,13 +13,13 @@ case class ScreeningsResponse(
                              )
 
 object ScreeningsResponse{
-  case class ScreeningEntity(from: ZonedDateTime, to: ZonedDateTime, title: String)
+  case class ScreeningEntity(screeningId: Int, from: ZonedDateTime, title: String)
 
   object ScreeningEntity{
     def apply(record: ScreeningRecord): ScreeningEntity = {
       ScreeningEntity(
+        record.screeningId,
         record.from,
-        record.to,
         record.title
       )
     }

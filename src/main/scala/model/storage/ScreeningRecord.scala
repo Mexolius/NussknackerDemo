@@ -2,4 +2,4 @@ package model.storage
 
 import java.time.ZonedDateTime
 
-case class ScreeningRecord(from: ZonedDateTime, to: ZonedDateTime, title: String)
+case class ScreeningRecord(screeningId: Int, from: ZonedDateTime, title: String, roomId: Int, seats: List[Int])

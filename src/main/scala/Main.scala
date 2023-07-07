@@ -4,7 +4,7 @@ import api.{Api, ScreeningsEndpoint}
 import com.typesafe.config.{Config, ConfigFactory}
 import service.ScreeningsService
 import storage.ScreeningsRepository
-import slick.jdbc.MySQLProfile.api._
+import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.io.StdIn
@@ -17,7 +17,7 @@ object Main {
     val config: Config = ConfigFactory.load()
 
     // Database 
-    val db = Database.forConfig("db", config)
+    val db = Database.forConfig("postgres", config)
 
     // Repo
     val screeningsRepository = new ScreeningsRepository(db)
