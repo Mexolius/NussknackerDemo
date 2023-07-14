@@ -17,4 +17,15 @@ class ScreeningsRepository(db: Database) extends ScreeningsTable {
 
     db.run(query)
   }
+
+  def getScreening(screeningId: Int): Future[Option[ScreeningRecord]] = {
+    val query =
+      screenings
+        .filter(s => s.screeningId === screeningId)
+        .take(1)
+        .result
+        .headOption
+
+    db.run(query)
+  }
 }

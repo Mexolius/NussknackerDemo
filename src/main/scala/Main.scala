@@ -3,7 +3,7 @@ import akka.actor.typed.scaladsl.Behaviors
 import api.{Api, ScreeningsEndpoint}
 import com.typesafe.config.{Config, ConfigFactory}
 import service.ScreeningsService
-import storage.ScreeningsRepository
+import storage.{BookingRepository, ScreeningsRepository}
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.ExecutionContextExecutor
@@ -21,9 +21,10 @@ object Main {
 
     // Repo
     val screeningsRepository = new ScreeningsRepository(db)
+    val bookingRepository = new BookingRepository(db)
 
     // Service
-    val screeningsService = new ScreeningsService(screeningsRepository)
+    val screeningsService = new ScreeningsService(screeningsRepository, bookingRepository)
 
     // Endpoints
 

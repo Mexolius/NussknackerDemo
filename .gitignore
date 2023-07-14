@@ -2,4 +2,5 @@
 /project/target/
 /target/
 /.idea/
+/src/database_docker/postgres-data/
 /.bsp/sbt.json
