@@ -13,18 +13,18 @@ case class ScreeningsResponse(
                              )
 
 object ScreeningsResponse{
-  case class ScreeningEntity(screeningId: Int, from: ZonedDateTime, title: String)
+  case class ScreeningEntity(screeningId: Int, from: ZonedDateTime, title: String, roomId: Int)
 
   object ScreeningEntity{
     def apply(record: ScreeningRecord): ScreeningEntity = {
       ScreeningEntity(
         record.screeningId,
         record.from,
-        record.title
+        record.title,record.roomId
       )
     }
 
-    implicit val fmt: JsonFormat[ScreeningEntity] = jsonFormat3(ScreeningEntity.apply)
+    implicit val fmt: JsonFormat[ScreeningEntity] = jsonFormat4(ScreeningEntity.apply)
   }
 
   implicit val fmt: JsonFormat[ScreeningsResponse] = jsonFormat1(ScreeningsResponse.apply)
