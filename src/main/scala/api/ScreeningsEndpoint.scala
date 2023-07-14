@@ -7,7 +7,7 @@ import service.ScreeningsService
 
 class ScreeningsEndpoint(service: ScreeningsService) {
   def routes: Route = {
-    path("screenings") {
+    pathPrefix("screenings") {
       pathEndOrSingleSlash {
         post {
           entity(as[TimeInterval]) { interval =>
@@ -15,12 +15,14 @@ class ScreeningsEndpoint(service: ScreeningsService) {
           }
         }
       } ~ path("details" / IntNumber){ screeningId =>
-        get{
-          complete(service.getScreeningDetails(screeningId))
+        pathEndOrSingleSlash {
+          get {
+            complete(service.getScreeningDetails(screeningId))
+          }
         }
       } ~ path("book" / IntNumber) { screeningId =>
         put {
-          {
+          pathEndOrSingleSlash {
             entity(as[BookingDetails]) { details =>
               complete(service.bookScreening(screeningId, details))
             }

@@ -42,7 +42,9 @@ class ScreeningsService(
 
   def bookScreening(screeningId: Int, bookingDetails: BookingDetails): Future[BookingResult] = {
     val tickets = bookingDetails.tickets
-    if(tickets.exists(td => TicketType.isUnsupported(td.ticketType))){
+    if(!checkNameCorrectness(bookingDetails.reservationName)){
+      throw ApiException(StatusCodes.BadRequest, "Incorrectly formatted name or surname")
+    } else if(tickets.exists(td => TicketType.isUnsupported(td.ticketType))){
       throw ApiException(StatusCodes.BadRequest, "Ticket type does not exist")
     } else {
       for {
@@ -61,6 +63,9 @@ class ScreeningsService(
             throw ApiException(StatusCodes.BadRequest, "One or more seats already taken")
           }
         }
+        _ = if(detectSingleSeatGap(seatsNumbers, priorBookings.map(_.seat))){
+          throw ApiException(StatusCodes.BadRequest, "Can't book leaving single seat gap")
+        }
         bookingRecords = bookingDetails.tickets.map{ ticket =>
           BookingRecord(
             screeningId = screeningId,
@@ -76,6 +81,29 @@ class ScreeningsService(
           expirationDate = screening.from.plusHours(1)
         )
       }
+    }
+  }
+
+  private def detectSingleSeatGap(newSeats: Seq[Int], previousSeats: Seq[Int]): Boolean = {
+    previousSeats.concat(newSeats).sorted.sliding(2).exists{ case Seq(a, b) => b - a == 2 }
+  }
+
+  // Would be much easier with regex if it wasn't for polish diacritics
+  private def checkNameCorrectness(name: String): Boolean = {
+    def isProperNamePart(namePart: String) = {
+      namePart.length > 2 && namePart.head.isUpper
+    }
+
+    name.split(" ") match {
+      case Array(name, surname) =>
+        isProperNamePart(name) && {
+          surname.split("-") match {
+            case Array(first, second) => Seq(first, second).forall(isProperNamePart)
+            case Array(surname) => isProperNamePart(surname)
+            case _ => false
+          }
+        }
+      case _ => false
     }
   }
 }
