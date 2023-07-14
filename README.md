@@ -10,6 +10,8 @@ A quick demo for Nussknacker recruitment
 ## How to run
 Open a console window and run `run.bat`
 
+If the application has trouble sending the requests please increase the first timeout in batch file from 15 to a larger value
+
 ## Assumptions
 - There is a single row of seats on backend
 - The rooms are not stored in the database - not mentioned in the requirements
